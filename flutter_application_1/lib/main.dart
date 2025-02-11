@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/bottom_navbar.dart';
 import 'package:flutter_application_1/screen/login.dart';
 import 'package:flutter_application_1/screen/register.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_application_1/screen/home.dart';
 
 void main() {
   runApp(KantinModernApp());

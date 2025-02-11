@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/bottom_navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_1/main.dart'; // Import HomeScreen
 import 'package:flutter_application_1/screen/register.dart';
@@ -131,7 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // Tambahkan fungsi login di sini
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DynamicBottomNavbar(),
+                        ),
+                      );
+                      // Navigasi ke halaman home
                     },
                     child: Text(
                       "Login",
