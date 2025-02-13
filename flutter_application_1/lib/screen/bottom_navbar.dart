@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/dashboard_user.dart';
 import 'package:flutter_application_1/screen/home.dart';
 import 'package:flutter_application_1/screen/keranjang.dart';
 
@@ -12,7 +13,7 @@ class _DynamicBottomNavbarState extends State<DynamicBottomNavbar> {
 
   final List<Widget> _pages = <Widget>[
     HomeScreenProduk(),
-    CartScreen(),
+    DashboardUser(),
   ];
 
   void onTabTapped(int index) {
@@ -37,8 +38,8 @@ class _DynamicBottomNavbarState extends State<DynamicBottomNavbar> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Keranjang',
+            icon: Icon(Icons.account_circle),
+            label: 'Anda',
           ),
         ],
       ),

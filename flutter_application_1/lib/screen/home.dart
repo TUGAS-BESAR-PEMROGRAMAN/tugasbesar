@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreenProduk>
 
   @override
   void dispose() {
+    _tabController
+        .removeListener(filterProducts); // Hapus listener sebelum dispose
     _tabController.dispose();
     super.dispose();
   }
@@ -48,6 +50,8 @@ class _HomeScreenState extends State<HomeScreenProduk>
   }
 
   void filterProducts() {
+    if (!mounted)
+      return; // Pastikan widget masih ada sebelum memanggil setState
     String kategoriDipilih = _tabController.index == 0 ? "Makanan" : "Minuman";
     setState(() {
       filteredProducts = products
