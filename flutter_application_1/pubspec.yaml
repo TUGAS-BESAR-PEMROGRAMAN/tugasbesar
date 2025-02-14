@@ -12,7 +12,11 @@ dependencies:
     sdk: flutter
   flutter_spinkit: ^5.2.1
   google_fonts: ^5.1.0
+<<<<<<< HEAD
   shared_preferences: ^2.5.2
+=======
+  animate_do: ^3.0.2
+>>>>>>> 71e6e95c9bbcac7e4be6873ae3daa8b49bfbff10
 
 dev_dependencies:
   flutter_test:
