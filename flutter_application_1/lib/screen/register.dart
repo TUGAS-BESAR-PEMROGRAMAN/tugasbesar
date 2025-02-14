@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_1/screen/login.dart';
+import 'package:flutter_application_1/model/handler_model.dart'; //import untuk login dan register
+// import 'package:flutter_application_1/service/Auth_manager.dart'; //import untuksharedpreference
+import 'package:flutter_application_1/service/api_services.dart'; // impoet untuk API login dan register
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -9,6 +12,32 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordHidden = true;
+
+  // kumpulan functionya
+  // Controllers untuk form fields
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _roleController = TextEditingController();
+
+  final ApiServices _apiServices =
+      ApiServices(); // Menggunakan ApiServices untuk register
+
+  // Menambahkan SnackBar dengan emoticon senyum
+  void showLoadingSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Text(
+              'Silakan menunggu proses registrasi... 😄',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        duration: Duration(seconds: 2), // Tampilkan SnackBar selama 2 detik
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   // Field Username
                   TextField(
+                    controller: _usernameController,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: "Username",
@@ -88,26 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: 15),
 
-                  // Field Email
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.white),
-                      prefixIcon: Icon(Icons.email, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-
                   // Field Password
                   TextField(
                     obscureText: _isPasswordHidden,
+                    controller: _passwordController,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: "Password",
@@ -134,6 +148,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 15),
+
+                  // Field Role
+                  TextField(
+                    controller: _roleController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: "Role",
+                      labelStyle: TextStyle(color: Colors.white),
+                      prefixIcon: Icon(Icons.person_pin, color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.2),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 25),
 
                   // Tombol Register
@@ -146,8 +178,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
-                      // Tambahkan fungsi register di sini
+                    onPressed: () async {
+                      // Ambil data inputan dari controller
+                      final registerInput = RegisterInput(
+                        username: _usernameController.text,
+                        password: _passwordController.text,
+                        role: _roleController.text,
+                      );
+
+                      // Tampilkan SnackBar saat proses dimulai
+                      showLoadingSnackbar();
+
+                      // Panggil fungsi register API
+                      RegisterResponse? response =
+                          await _apiServices.register(registerInput);
+
+                      if (response != null &&
+                          response.message == 'Registration successful') {
+                        // Jika registrasi sukses, arahkan ke login
+                        Navigator.pop(context); // Kembali ke login
+                      } else {
+                        // Tampilkan pesan error jika gagal
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Registration failed')),
+                        );
+                      }
                     },
                     child: Text(
                       "Register",
@@ -158,12 +213,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
+
                   SizedBox(height: 15),
 
                   // Login Link
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context); // Kembali ke login
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+
+                      // Navigator.pop(context); // Kembali ke login
                     },
                     child: Text(
                       "Sudah punya akun? Login",
